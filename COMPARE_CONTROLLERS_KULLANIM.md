@@ -149,7 +149,9 @@ MPC         0.0612      0.1944       0.891        3.102        9.0011    120.0
 | Harita | `map_type` | `map_type` | menü |
 | Hız | `v_ref = 8` | `v_ref = 8` | `v_const = 8` |
 | Tur sayısı | `N_loops = 3` | `N_loops = 3` | `n_laps = 3` |
-| Öngörme adımı | `lookahead_steps = 10` | — | `N_p = 50` |
+| Öngörme adımı | `lookahead_steps = 10` (adım) | `lookahead_m = 3.0` (metre)¹ | `N_p = 50` |
+
+> ¹ LQR'da lookahead `LQRScript_DiscKappa.m` içinde **değil**, `nearest_ref_point.m` satır 42'de `lookahead_m = 3.0` olarak **hardcoded** tanımlıdır. Değiştirmek için doğrudan o dosyayı düzenleyin. PID'den farkı: PID'de bu değer scriptten workspace'e aktarılırken LQR'da dosyaya gömülüdür.
 
 ---
 
