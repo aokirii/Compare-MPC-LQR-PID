@@ -54,7 +54,7 @@ if isempty(initialized)
     d_log = nan(Nmax,1); s_log = nan(Nmax,1);
 
     % --- Sprite yukle ---
-    iconPath = '/Users/kasimesen/Desktop/Tasarım/car.png';
+    iconPath = '/Users/kasimesen/Desktop/car.png';
     try
         [carImg, ~, carAlpha] = imread(iconPath);
         carImg = im2double(carImg);
@@ -126,12 +126,21 @@ if ~isvalid(hFig)
 end
 
 % --- Animasyon (throttled) ---
+if idx > 0
+    jump = hypot(x - trailX(idx), y - trailY(idx));
+    if jump > 5   % eşik: 5 veya 10 deneyebilirsin
+       idx = idx + 1;
+       trailX(idx) = NaN;
+       trailY(idx) = NaN;
+    end
+end
+
 idx = idx + 1;
 trailX(idx) = x;
 trailY(idx) = y;
 updateCounter = updateCounter + 1;
 
-if mod(updateCounter, 10) == 0
+if mod(updateCounter, 1) == 0
     set(hTrail, 'XData', trailX(1:idx), 'YData', trailY(1:idx));
     set(hSprite, 'XData', [x-halfW x+halfW], 'YData', [y-halfH y+halfH]);
     if mod(updateCounter, 50) == 0

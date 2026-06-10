@@ -25,7 +25,7 @@ end
 
 %% 2. SİSTEM PARAMETRELERİ
 v_ref = 8;            % ortak hiz (LQR/MPC ile ayni)
-lookahead_steps = 10.0;
+lookahead_steps = 3.0;
 
 %% 3. REFERANS YOL
 wp = waypoints;

@@ -1,14 +1,11 @@
+clc; clear; close all;
 
-clc; clear persistent_anim_update nearest_ref_point;   % PID/LQR ile ayni: tum workspace'i SILME, sadece persistent'leri sifirla (sim_log_PID/LQR korunur)
-
-%% --- Harita secimi (diger kontrolculerle AYNI yerel harita) ---
-baseDir = fileparts(mfilename('fullpath'));
-addpath(baseDir);
+%% --- Harita secimi ---
 choice = menu('Map sec', 'Circle', 'Rectangle', 'Hand Figure');
 switch choice
-    case 1, run(fullfile(baseDir, 'YuvarlakMap.m'));
-    case 2, run(fullfile(baseDir, 'KareMap.m'));
-    case 3, run(fullfile(baseDir, 'HandFigureMap.m'));
+    case 1, run('/Users/kasimesen/Desktop/Tasarım/2. Week/YuvarlakMap.m');
+    case 2, run('/Users/kasimesen/Desktop/Tasarım/2. Week/KareMap.m');
+    case 3, run('/Users/kasimesen/Desktop/Tasarım/2. Week/HandFigureMap.m');
     otherwise, error('Secim yapilmadi.');
 end
 if ~exist('waypoints','var') || size(waypoints,2)~=2 || size(waypoints,1)<2
@@ -54,29 +51,40 @@ theta0   = theta_ref(idx0);
 %% --- Araç parametreleri ---
 L         = 2.7;
 lr        = 1.35;
-v_const   = 8;
+lf        = L - lr;
+v_const   = 5;
+m         = 1500;
+Iz        = 2250;
+Cf        = 2*19000;
+Cr        = 2*19000;
 delta_max = deg2rad(30);
-ddelta_max_per_step = 4 * 0.02; 
+ddelta_max_per_step = 10 * 0.02;
 
 %% --- Sim parametreleri ---
 Ts       = 0.02;
-T_end    = 140;
+T_end    = 350;
 goal_tol = 1.0;
 n_laps = 3;
 
 %% --- MPC ayarlari ---
-N_p = 90;
-Q   = diag([30, 50]);
+N_p = 60;
+Q   = diag([70, 10, 50, 30]);
 R   = 15.0;
-nx  = 2;
+nx  = 4;
 nu  = 1;
 %% --- Hata modeli ---
-Ac = [0, v_const;
-      0, 0];
+Ac = [0, 1, 0, 0;
+      0, -(Cf+Cr)/(m*v_const), (Cf+Cr)/m, (-Cf*lf+Cr*lr)/(m*v_const);
+      0, 0, 0, 1;
+      0, -(Cf*lf-Cr*lr)/(Iz*v_const), (Cf*lf-Cr*lr)/Iz, -(Cf*lf^2+Cr*lr^2)/(Iz*v_const)];
 Bc = [0;
-      v_const/L];
+      Cf/m;
+      0;
+      Cf*lf/Iz];
 Ec = [0;
-     -v_const];
+      -(Cf*lf-Cr*lr)/m - v_const^2;
+      0;
+      -(Cf*lf^2+Cr*lr^2)/Iz];
 
 %% --- Euler discretization ---
 Ad = eye(nx) + Ts * Ac;

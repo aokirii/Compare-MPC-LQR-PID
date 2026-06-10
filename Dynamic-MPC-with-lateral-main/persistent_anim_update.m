@@ -5,7 +5,7 @@ function persistent_anim_update(x, y, th, delta_cmd, ey, eh)
 %   * Her run yeni grafik istiyorsaniz Model > Properties > Callbacks >
 %     InitFcn alanina su komutu yazin:
 %         clear persistent_anim_update
-%   * Log her 50 adimda bir base workspace'e 'sim_log_MPC' adiyla yazilir;
+%   * Log her 50 adimda bir base workspace'e 'sim_log' adiyla yazilir;
 %     boylece simulasyon ortasinda durdursaniz bile veri kaybi olmaz.
 %
 %   Girdiler:
@@ -156,6 +156,6 @@ function persistent_anim_update(x, y, th, delta_cmd, ey, eh)
         sim_log.delta = delta_log(1:K);
         sim_log.ey    = ey_log(1:K);
         sim_log.eh    = eh_log(1:K);
-        assignin('base', 'sim_log_MPC', sim_log);
+        assignin('base', 'sim_log', sim_log);
     end
 end
