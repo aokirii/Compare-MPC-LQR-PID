@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Simulink derleme önbelleği
+*.slxc
+slprj/
+*/slprj/
+
+# MATLAB otomatik kayıt dosyaları
+*.asv
+*.m~
+
+# MATLAB ikili veri dosyaları (büyük olabilir, gerekirse kaldırın)
+*.mat
+
+# MATLAB kod oluşturma çıktıları
+codegen/
+*/codegen/
+
+# Simulink Report Generator
+*.rpt
+
+# MATLAB paketleyici
+*.prj
+
+# MATLAB profil sonuçları
+*.mlprofiling
+
+# Geçici / editör dosyaları
+*.tmp
+*.bak
+*~
